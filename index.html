@@ -443,6 +443,80 @@ button:focus-visible{outline:2px solid #7A86C8; outline-offset:2px; border-radiu
 .yt-host iframe{width:100%; height:100%; border:0; display:block}
 .phone:not(.np-open) .yt-host{left:-9999px; right:auto; width:240px}
 
+/* ---------- Phone app ---------- */
+.app{position:relative}
+.badge{position:absolute; top:-6px; right:0; min-width:22px; height:22px; padding:0 6px; border-radius:11px; background:#ff3b30; color:#fff; font-size:13px; font-weight:600; display:grid; place-items:center; z-index:2; box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.view.tel{background:var(--surface)}
+.tel-tabs{flex:none; display:flex; justify-content:space-around; padding:6px 0 28px; border-top:.5px solid var(--line); background:color-mix(in srgb, var(--surface) 92%, transparent)}
+.tel-tabs button{display:flex; flex-direction:column; align-items:center; gap:2px; font-size:10px; color:var(--muted); width:64px; position:relative}
+.tel-tabs button.on{color:#007aff}
+.tel-tabs svg{width:26px; height:26px; fill:currentColor}
+.tel-tabs .badge{top:-4px; right:8px; min-width:18px; height:18px; font-size:11px}
+.trow{display:flex; align-items:center; gap:12px; padding:8px 8px 8px 16px; width:100%; text-align:left}
+.trow .tx{flex:1; min-width:0; border-bottom:.5px solid var(--line); padding:4px 0 10px; display:flex; align-items:center; gap:8px}
+.trow .nm{flex:1; min-width:0}
+.trow b{display:block; font-size:16px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.trow b.miss{color:#ff3b30}
+.trow small{font-size:13px; color:var(--muted); display:flex; align-items:center; gap:4px}
+.trow small svg{width:12px; height:12px; fill:var(--muted)}
+.trow .when{font-size:14px; color:var(--muted); flex:none}
+.info{width:26px; height:26px; border-radius:50%; border:1.5px solid #007aff; color:#007aff; font:italic 600 14px Georgia, serif; display:grid; place-items:center; flex:none}
+.seg2{display:flex; margin:0 16px 10px; background:var(--surface2); border-radius:9px; padding:2px}
+.seg2 button{flex:1; padding:6px; border-radius:7px; font-size:13px; font-weight:600}
+.seg2 button.on{background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.letter{font-size:13px; font-weight:600; color:var(--muted); padding:10px 16px 2px; background:var(--surface2)}
+.mycard{display:flex; align-items:center; gap:14px; padding:6px 16px 14px; border-bottom:.5px solid var(--line); width:100%; text-align:left}
+.mycard b{font-size:20px; display:block} .mycard small{color:var(--muted); font-size:13px}
+.kp{display:flex; flex-direction:column; align-items:center; padding-top:20px}
+.kp-num{font-size:34px; height:46px; letter-spacing:1px; min-width:10px; text-align:center; font-variant-numeric:tabular-nums}
+.kp-grid{display:grid; grid-template-columns:repeat(3,78px); gap:14px 26px; margin-top:16px}
+.kp-grid button{width:78px; height:78px; border-radius:50%; background:var(--surface2); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:32px; line-height:1}
+.kp-grid button small{font-size:10px; letter-spacing:2px; font-weight:600; margin-top:2px}
+.kp-grid button:active{filter:brightness(.85)}
+.kp-row{display:grid; grid-template-columns:repeat(3,78px); gap:26px; margin-top:16px; align-items:center}
+.callbtn{width:78px; height:78px; border-radius:50%; background:#34c759; display:grid; place-items:center}
+.callbtn svg{width:34px; height:34px; fill:#fff}
+.kp-del{font-size:24px; color:var(--muted)}
+.vm{border-bottom:.5px solid var(--line)}
+.vm .trow .tx{border:0}
+.vm-body{padding:0 16px 14px 16px}
+.vm-t{font-size:14px; line-height:1.45; background:var(--surface2); border-radius:10px; padding:10px 12px; margin-bottom:10px}
+.vm-t small{display:block; font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.5px; margin-bottom:3px}
+.vm-ctl{display:flex; align-items:center; gap:12px}
+.vm-play{width:34px; height:34px; border-radius:50%; background:#007aff; display:grid; place-items:center; flex:none}
+.vm-play svg{width:14px; height:14px; fill:#fff}
+.vm-bar{flex:1; height:4px; border-radius:2px; background:var(--line); position:relative}
+.vm-bar i{position:absolute; left:0; top:0; bottom:0; width:0; border-radius:2px; background:#007aff}
+.vm-time{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; width:34px; text-align:right}
+.vm-acts{display:flex; gap:18px; margin-top:12px}
+.vm-acts button{color:#007aff; font-size:15px}
+.vm-acts button.red{color:#ff3b30}
+.ccard{display:flex; flex-direction:column; align-items:center; padding:10px 16px 0}
+.ccard h3{font-size:28px; font-weight:400; margin:10px 0 14px}
+.cacts{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; width:100%; margin-bottom:14px}
+.cacts button{background:var(--surface2); border-radius:12px; padding:9px 0 7px; display:flex; flex-direction:column; align-items:center; gap:3px; color:#007aff; font-size:11px}
+.cacts svg{width:22px; height:22px; fill:#007aff}
+.cfield{width:100%; background:var(--surface2); border-radius:12px; padding:10px 14px; margin-bottom:10px; text-align:left}
+.cfield small{display:block; font-size:13px; color:var(--text)} .cfield span{color:#007aff; font-size:16px}
+.cfield p{font-size:15px; line-height:1.4; white-space:pre-wrap}
+.view.call{background:linear-gradient(170deg,#3a3550,#14111d 70%); color:#fff}
+.call-top{display:flex; flex-direction:column; align-items:center; padding-top:90px}
+.call-top h3{font-size:32px; font-weight:400; margin-top:16px}
+.call-top p{font-size:17px; opacity:.7; margin-top:4px}
+.call-grid{display:grid; grid-template-columns:repeat(3,76px); gap:22px 30px; justify-content:center; margin-top:auto}
+.call-grid button{display:flex; flex-direction:column; align-items:center; gap:7px; font-size:12px}
+.call-grid span{width:76px; height:76px; border-radius:50%; background:rgba(255,255,255,.16); display:grid; place-items:center; backdrop-filter:blur(10px)}
+.call-grid svg{width:30px; height:30px; fill:#fff}
+.call-grid button.on span{background:#fff} .call-grid button.on svg{fill:#111}
+.endbtn{width:76px; height:76px; border-radius:50%; background:#ff3b30; display:grid; place-items:center; margin:34px auto 50px}
+.endbtn svg{width:34px; height:34px; fill:#fff; transform:rotate(135deg)}
+.call-kp{display:none; grid-template-columns:repeat(3,70px); gap:12px 24px; justify-content:center; margin-top:auto}
+.call-kp button{width:70px; height:70px; border-radius:50%; background:rgba(255,255,255,.16); font-size:28px}
+.view.call.kpon .call-grid{display:none} .view.call.kpon .call-kp{display:grid}
+.ig-top .back{display:flex; align-items:center; gap:2px; color:#2f7cf6; font-size:17px; padding:8px 4px; flex:none}
+.ig-top .back svg{width:12px; height:20px}
+.ig-top .ig-logo{margin-left:10px; cursor:pointer}
+
 @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.01ms !important; animation-duration:.01ms !important} }
 </style>
 </head>
@@ -543,6 +617,7 @@ const PEOPLE = {
   ayu: {"name": "Kak Long", "color": "#a09080", "ink": "#fff", "pic": ""},
   andika: {"name": "Abang Andika", "color": "#4f6b5a", "ink": "#fff", "pic": ""},
   arjuna: {"name": "Arjuna", "color": "#5a7d99", "ink": "#fff", "pic": ""},
+  ustazah: {"name": "Ustazah", "color": "#5f7f6a", "ink": "#fff", "pic": ""},
 };
 
 const HOME_QUOTE = {"text": "Teruskan bermain dan teruslah bergembira. Di sini, engkau tidak akan berduka.", "src": "Seri Bayu"};
@@ -646,11 +721,66 @@ const EVENTS = [
 
 const LOCK_NOTIF = {"chat": "keluarga", "from": "mak", "text": "Anggun, Ahad ni balik masak untuk kenduri Andika. Datang awal.", "when": "Saturday"};
 
-/* ---------- LENSA (Instagram-style app) ----------
+/* ---------- INSTAGRAM ----------
    Shared by all six phones. "by" = who posted, "likes" = who liked it
    (if this phone's owner is in the list, the heart starts red),
    "extra" = how many other people liked it, "img" = a picture path.  */
-const INSTA_NAME = "Lensa";
+/* ---------- PHONE APP ----------
+   favorites = people on the Favorites tab
+   recents   = call history, newest first. type: "in", "out" or "missed"
+   voicemails: "text" is what the caller says (shown as a transcript).
+   Add "audio": "pics/voicemail.mp3" to play a real recording. */
+const CALLS = {
+ "favorites": [
+  "bulan",
+  "atul",
+  "nuha"
+ ],
+ "recents": [
+  {
+   "who": "bulan",
+   "type": "in",
+   "when": "10:41 PM"
+  },
+  {
+   "who": "mak",
+   "type": "missed",
+   "when": "Yesterday",
+   "count": 2
+  },
+  {
+   "who": "ustazah",
+   "type": "in",
+   "when": "Monday"
+  },
+  {
+   "who": "atul",
+   "type": "out",
+   "when": "Sunday"
+  },
+  {
+   "who": "mak",
+   "type": "out",
+   "when": "Friday"
+  }
+ ],
+ "voicemails": [
+  {
+   "who": "mak",
+   "when": "Yesterday",
+   "dur": "0:18",
+   "text": "Anggun, Mak ni. Ahad datang awal. Abang kau jemput ramai orang. Jangan lupa bawa periuk besar."
+  },
+  {
+   "who": "ustazah",
+   "when": "Monday",
+   "dur": "0:24",
+   "text": "Assalamualaikum Anggun. Ustazah nak bincang pasal kelas dewasa. Ramai dah daftar. Telefon Ustazah balik bila senang ya."
+  }
+ ]
+};
+
+const INSTA_NAME = "Instagram";
 const INSTA = {
  "users": {
   "anggun": {
@@ -1511,6 +1641,10 @@ document.addEventListener("keydown", e => {
 
 // icons
 function msgGlyph(s){ return `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path fill="#fff" d="M12 3C6.5 3 2 6.7 2 11.2c0 2.6 1.5 4.9 3.9 6.4-.2 1.3-.9 2.6-2 3.4 2 0 3.8-.7 5-1.8 1 .3 2 .4 3.1.4 5.5 0 10-3.7 10-8.3S17.5 3 12 3Z"/></svg>`; }
+// the Instagram icon takes the colour of the phone owner's book
+function mixHex(a, b, t){ const p = h => [1,3,5].map(i => parseInt(h.slice(i, i + 2), 16)); const x = p(a), y = p(b);
+  return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join(""); }
+const bookGradient = c => `linear-gradient(150deg, ${mixHex(c, "#ffffff", .28)}, ${c} 55%, ${mixHex(c, "#000000", .38)})`;
 const ICONS = {
   mesej: { label:"Messages", bg:"linear-gradient(#6ee36e,#2fbf3f)", svg: msgGlyph(34) },
   nota: { label:"Notes", bg:"#fff", svg:`<svg width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="17" fill="#f8c93c"/><g stroke="#d6d6dc" stroke-width="1.2"><path d="M8 29h44M8 38h44M8 47h44"/></g></svg>` },
@@ -1518,7 +1652,7 @@ const ICONS = {
   kalendar: { label:"Calendar", bg:"#fff", svg:`<div style="text-align:center;line-height:1"><div style="color:#e0443e;font-size:9px;font-weight:600">Wednesday</div><div style="color:#111;font-size:30px;font-weight:300;margin-top:2px">11</div></div>` },
   telefon: { label:"Phone", bg:"linear-gradient(#6ee36e,#2fbf3f)", svg:`<svg width="30" height="30" viewBox="0 0 24 24"><path fill="#fff" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>` },
   kamera: { label:"Camera", bg:"linear-gradient(#d9d9de,#a5a5ad)", svg:`<svg width="34" height="34" viewBox="0 0 24 24"><path fill="#333" d="M9 4 7.2 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.2L15 4H9Z"/><circle cx="12" cy="13" r="4.2" fill="#d9d9de"/><circle cx="12" cy="13" r="2.6" fill="#333"/></svg>` },
-  lensa: { label: INSTA_NAME, bg:"linear-gradient(150deg,#2a2140,#6B3A7D 60%,#B3262E)", svg:`<svg width="38" height="38" viewBox="0 0 38 38" fill="none" stroke="#fff" stroke-width="2.4"><circle cx="19" cy="19" r="12"/><path d="M22.5 12.5a7 7 0 1 0 3 9.5 5.5 5.5 0 1 1-3-9.5z" fill="#fff" stroke="none"/></svg>` },
+  lensa: { label: INSTA_NAME, bg: bookGradient(P(OWNER).color), svg:`<svg width="38" height="38" viewBox="0 0 38 38" fill="none" stroke="#fff" stroke-width="2.4"><circle cx="19" cy="19" r="12"/><path d="M22.5 12.5a7 7 0 1 0 3 9.5 5.5 5.5 0 1 1-3-9.5z" fill="#fff" stroke="none"/></svg>` },
   muzik: { label:"Music", bg:"linear-gradient(#ff6b7d,#f2364f)", svg:`<svg width="30" height="30" viewBox="0 0 24 24"><path fill="#fff" d="M9 17.5V6l11-2v11.5a2.5 2.5 0 1 1-2-2.45V7.6l-7 1.3v8.6a2.5 2.5 0 1 1-2-2.45Z"/></svg>` }
 };
 function appBtn(key){
@@ -1576,6 +1710,7 @@ function openApp(key){
   if (key === "kalendar") return openCalendar();
   if (key === "lensa") return openLensa();
   if (key === "muzik") return openMusic();
+  if (key === "telefon") return openPhone();
   toast("Nothing here yet.");
 }
 
@@ -1830,7 +1965,7 @@ const feedPosts = () => allPosts().filter(p => p.by === OWNER || isFollowing(p.b
 
 let igRoot = null;
 function openLensa(){
-  push(`<div class="ig-top">${backBtn("")}<span class="ig-logo">${esc(INSTA_NAME)}</span><span class="sp1"></span>
+  push(`<div class="ig-top">${backBtn("Home")}<span class="ig-logo" data-act="tab" data-id="home" role="button">${esc(INSTA_NAME)}</span><span class="sp1"></span>
       <button class="ib" data-act="activity" aria-label="Activity">${ic("heart")}</button><button class="ib" data-act="dms" aria-label="Messages">${ic("send")}</button></div>
     <div class="scroll ig-body"></div>
     <nav class="ig-tabs"><button data-act="tab" data-id="home" aria-label="Home">${ic("home")}</button><button data-act="tab" data-id="search" aria-label="Search">${ic("search")}</button>
@@ -2224,6 +2359,165 @@ phone.addEventListener("keydown", e => {
   if (e.target.closest(".cbox")){ e.preventDefault(); sendComment(v, v._post); }
   if (e.target.closest(".dmbox")){ e.preventDefault(); sendDM(v, v._dm); }
 });
+
+
+/* ===================== PHONE ===================== */
+const TI = {
+  star: '<path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.1l-5.7 3.2 1.2-6.4-4.7-4.4 6.4-.8z"/>',
+  clock: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm.9 10.4V6.5h-1.8v6.6l4.6 2.8.9-1.5z"/>',
+  person: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.2a3.4 3.4 0 1 1 0 6.8 3.4 3.4 0 0 1 0-6.8zm0 13.8a8 8 0 0 1-6.2-2.9c1.4-1.8 3.7-2.7 6.2-2.7s4.8.9 6.2 2.7A8 8 0 0 1 12 20z"/>',
+  grid9: '<circle cx="5.5" cy="4.5" r="2"/><circle cx="12" cy="4.5" r="2"/><circle cx="18.5" cy="4.5" r="2"/><circle cx="5.5" cy="11" r="2"/><circle cx="12" cy="11" r="2"/><circle cx="18.5" cy="11" r="2"/><circle cx="5.5" cy="17.5" r="2"/><circle cx="12" cy="17.5" r="2"/><circle cx="18.5" cy="17.5" r="2"/><circle cx="12" cy="22" r="1.6"/>',
+  vm: '<path d="M6.5 7.5a4.5 4.5 0 0 0-1.2 8.8h13.4a4.5 4.5 0 1 0-4-2.5H10a4.5 4.5 0 0 0-3.5-6.3zm0 2a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm11 0a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/>',
+  call: '<path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/>',
+  msg: '<path d="M12 3C6.5 3 2 6.7 2 11.2c0 2.6 1.5 4.9 3.9 6.4-.2 1.3-.9 2.6-2 3.4 2 0 3.8-.7 5-1.8 1 .3 2 .4 3.1.4 5.5 0 10-3.7 10-8.3S17.5 3 12 3z"/>',
+  video: '<path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h10A1.5 1.5 0 0 1 16 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 3 17.5zM17 10l4-2.5v9L17 14z"/>',
+  mail: '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.5 2v.3L12 12l7.5-4.7V7z"/>',
+  mute: '<path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zM5 11h2a5 5 0 0 0 10 0h2a7 7 0 0 1-6 6.9V21h-2v-3.1A7 7 0 0 1 5 11z"/><path d="M3 3l18 18" stroke="#fff" stroke-width="0"/>',
+  speaker: '<path d="M3 9h4l5-4v14l-5-4H3zM15.5 8.5a5 5 0 0 1 0 7l-1.4-1.4a3 3 0 0 0 0-4.2zM18.3 5.7a9 9 0 0 1 0 12.6l-1.4-1.4a7 7 0 0 0 0-9.8z"/>',
+  add: '<path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/>',
+  out: '<path d="M14 3h7v7h-2V6.4l-7.3 7.3-1.4-1.4L17.6 5H14zM5 5h6v2H7v10h10v-4h2v6H5z"/>',
+  play: '<path d="M7 4.5v15l13-7.5z"/>', pause: '<rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/>'
+};
+const ti = n => `<svg viewBox="0 0 24 24" fill-rule="evenodd" aria-hidden="true">${TI[n]}</svg>`;
+const telName = k => (P(k).name || k);
+const missedTotal = () => (CALLS.recents || []).filter(r => r.type === "missed").reduce((n, r) => n + (r.count || 1), 0);
+const vmList = () => (CALLS.voicemails || []).filter((v, i) => !store.get("vmdel", {})[i]).map(v => v);
+const vmUnheard = () => (CALLS.voicemails || []).filter((v, i) => !store.get("vmdel", {})[i] && !store.get("vmheard", {})[i]).length;
+function phoneBadge(){
+  const n = store.get("missedSeen", false) ? 0 : missedTotal();
+  document.querySelectorAll('[data-app="telefon"]').forEach(a => { let b = a.querySelector(".badge");
+    if (!n){ if (b) b.remove(); return; }
+    if (!b){ b = document.createElement("b"); b.className = "badge"; a.prepend(b); } b.textContent = n; });
+}
+phoneBadge();
+
+let telRoot = null;
+function openPhone(tab){
+  push(`<div class="nav">${backBtn("Home")}</div><div class="scroll tel-body"></div>
+    <nav class="tel-tabs">${[["fav","Favorites","star"],["rec","Recents","clock"],["con","Contacts","person"],["key","Keypad","grid9"],["vm","Voicemail","vm"]].map(([id, l, i]) =>
+      `<button data-act="teltab" data-id="${id}">${ti(i)}${l}${id === "vm" && vmUnheard() ? `<b class="badge">${vmUnheard()}</b>` : ""}</button>`).join("")}</nav>`,
+    { cls: "tel", after: v => { telRoot = v; v._onClose = () => { telRoot = null; }; telShow(tab || "rec"); } });
+}
+function telShow(tab){
+  if (!telRoot) return;
+  telRoot._tab = tab; const body = telRoot.querySelector(".tel-body");
+  telRoot.querySelectorAll(".tel-tabs button").forEach(b => b.classList.toggle("on", b.dataset.id === tab));
+  if (tab === "fav") body.innerHTML = `<div class="big-title">Favorites</div>` + ((CALLS.favorites || []).map(k =>
+      `<div class="trow"><button class="nm" style="display:flex;align-items:center;gap:12px;text-align:left" data-act="dial" data-id="${k}">${avatar(k,40)}<span class="tx" style="border:0"><span class="nm"><b>${esc(telName(k))}</b><small>mobile</small></span></span></button><button class="info" data-act="contact" data-id="${k}" aria-label="Info">i</button></div>`).join("") || '<p class="empty">No Favorites</p>');
+  if (tab === "rec"){ store.set("missedSeen", true); phoneBadge(); renderRecents(body, telRoot._recSeg || "all"); }
+  if (tab === "con") body.innerHTML = contactsHTML();
+  if (tab === "key"){ telRoot._num = telRoot._num || ""; body.innerHTML = keypadHTML(telRoot._num); }
+  if (tab === "vm") body.innerHTML = vmHTML();
+  body.scrollTop = 0;
+}
+function renderRecents(body, seg){
+  telRoot._recSeg = seg;
+  const rows = (CALLS.recents || []).filter(r => seg === "all" || r.type === "missed");
+  body.innerHTML = `<div class="big-title">Recents</div><div class="seg2"><button class="${seg === "all" ? "on" : ""}" data-act="recseg" data-id="all">All</button><button class="${seg === "missed" ? "on" : ""}" data-act="recseg" data-id="missed">Missed</button></div>` +
+    (rows.map(r => `<div class="trow"><button style="flex:1;min-width:0;display:flex;gap:10px;align-items:center;text-align:left" data-act="dial" data-id="${r.who}">
+      <span class="tx"><span class="nm"><b class="${r.type === "missed" ? "miss" : ""}">${esc(telName(r.who))}${(r.count || 1) > 1 ? ` (${r.count})` : ""}</b>
+      <small>${r.type === "out" ? ti("out") : ""}${r.video ? "FaceTime Video" : "mobile"}</small></span><span class="when">${esc(r.when || "")}</span></span></button>
+      <button class="info" data-act="contact" data-id="${r.who}" aria-label="Info">i</button></div>`).join("") || '<p class="empty">No Missed Calls</p>');
+}
+function contactsHTML(){
+  const keys = Object.keys(PEOPLE).filter(k => k !== OWNER && !(PEOPLE[k].hidden)).sort((a, b) => telName(a).localeCompare(telName(b)));
+  let html = `<div class="big-title">Contacts</div><button class="mycard" data-act="contact" data-id="${OWNER}">${avatar(OWNER, 56)}<span><b>${esc(telName(OWNER))}</b><small>My Card</small></span></button>`, last = "";
+  keys.forEach(k => { const L = telName(k)[0].toUpperCase(); if (L !== last){ html += `<div class="letter">${esc(L)}</div>`; last = L; }
+    html += `<button class="trow" data-act="contact" data-id="${k}"><span class="tx" style="padding:8px 0 12px"><span class="nm"><b style="font-weight:500">${esc(telName(k))}</b></span></span></button>`; });
+  return html;
+}
+const KL = ["","ABC","DEF","GHI","JKL","MNO","PQRS","TUV","WXYZ"];
+function keypadHTML(num){
+  return `<div class="kp"><div class="kp-num">${esc(num)}</div><div class="kp-grid">${[1,2,3,4,5,6,7,8,9].map(n => `<button data-act="kp" data-id="${n}">${n}<small>${KL[n-1]}</small></button>`).join("")}
+    <button data-act="kp" data-id="*">*</button><button data-act="kp" data-id="0">0<small>+</small></button><button data-act="kp" data-id="#">#</button></div>
+    <div class="kp-row"><span></span><button class="callbtn" data-act="kpcall" aria-label="Call">${ti("call")}</button>${num ? '<button class="kp-del" data-act="kpdel" aria-label="Delete">⌫</button>' : "<span></span>"}</div></div>`;
+}
+function vmHTML(){
+  const del = store.get("vmdel", {}), heard = store.get("vmheard", {}), open = telRoot._vmOpen;
+  const items = (CALLS.voicemails || []).map((v, i) => ({ v, i })).filter(x => !del[x.i]);
+  return `<div class="big-title">Voicemail</div>` + (items.map(({ v, i }) => `<div class="vm">
+    <button class="trow" data-act="vmopen" data-id="${i}"><span class="tx"><span class="nm"><b>${heard[i] ? "" : '<span style="color:#007aff">● </span>'}${esc(telName(v.who))}</b><small>${esc(v.when || "")}</small></span><span class="when">${esc(v.dur || "")}</span></span></button>
+    ${open === i ? `<div class="vm-body"><div class="vm-t"><small>TRANSCRIPTION</small>${esc(v.text || "")}</div>
+      <div class="vm-ctl"><button class="vm-play" data-act="vmplay" data-id="${i}" aria-label="Play">${ti("play")}</button><span class="vm-bar"><i></i></span><span class="vm-time">${esc(v.dur || "0:00")}</span></div>
+      <div class="vm-acts"><button data-act="dial" data-id="${v.who}">Call Back</button><button data-act="contact" data-id="${v.who}">Contact</button><span class="sp1"></span><button class="red" data-act="vmdel" data-id="${i}">Delete</button></div></div>` : ""}
+  </div>`).join("") || '<p class="empty">No Voicemail</p>');
+}
+let vmAudio = null, vmTimer = null;
+function stopVM(){ if (vmAudio){ try { vmAudio.pause(); } catch (e) {} vmAudio = null; } clearInterval(vmTimer); vmTimer = null; }
+function playVM(i, btn){
+  const v = CALLS.voicemails[i]; const bar = btn.parentElement.querySelector(".vm-bar i"), time = btn.parentElement.querySelector(".vm-time");
+  if (vmTimer || vmAudio){ stopVM(); btn.innerHTML = ti("play"); return; }
+  const h = store.get("vmheard", {}); h[i] = true; store.set("vmheard", h);
+  const parts = String(v.dur || "0:20").split(":"); const total = (+parts[0]) * 60 + (+parts[1] || 0);
+  btn.innerHTML = ti("pause");
+  if (v.audio){ vmAudio = new Audio(encodeURI(v.audio)); vmAudio.play().catch(() => toast("Can’t play this recording"));
+    vmTimer = setInterval(() => { if (!vmAudio) return; const d = vmAudio.duration || total; bar.style.width = (vmAudio.currentTime / d * 100) + "%"; time.textContent = mmss(d - vmAudio.currentTime);
+      if (vmAudio.ended){ stopVM(); btn.innerHTML = ti("play"); bar.style.width = "0"; time.textContent = v.dur; } }, 250); return; }
+  let t = 0; vmTimer = setInterval(() => { t += .25; bar.style.width = Math.min(100, t / total * 100) + "%"; time.textContent = mmss(total - t);
+    if (t >= total){ stopVM(); btn.innerHTML = ti("play"); bar.style.width = "0"; time.textContent = v.dur; } }, 250);
+}
+function openContact(k){
+  const p = P(k), chat = CHATS.find(c => c.with === k);
+  push(`<div class="nav">${backBtn("Back")}</div><div class="scroll"><div class="ccard">${avatar(k, 96)}<h3>${esc(telName(k))}</h3>
+    ${k === OWNER ? "" : `<div class="cacts"><button data-act="cmsg" data-id="${k}">${ti("msg")}message</button><button data-act="dial" data-id="${k}">${ti("call")}call</button><button data-act="facetime" data-id="${k}">${ti("video")}video</button><button data-act="cmail" data-id="${k}">${ti("mail")}mail</button></div>`}
+    <div class="cfield"><small>mobile</small><span>${esc(p.phone || "•••• ••• ••••")}</span></div>
+    ${p.note ? `<div class="cfield"><small>Notes</small><p>${esc(p.note)}</p></div>` : ""}
+    ${k !== OWNER && chat ? `<button class="cfield" data-act="cmsg" data-id="${k}"><span>Send Message</span></button>` : ""}
+    ${k !== OWNER && (CALLS.favorites || []).includes(k) ? `<div class="cfield"><span style="color:var(--muted)">In Favorites</span></div>` : ""}
+  </div></div>`, { cls: "tel" });
+}
+function startCall(who, video){
+  const label = who && PEOPLE[who] ? telName(who) : (who || "Unknown");
+  push(`<div class="call-top">${who && PEOPLE[who] ? avatar(who, 96) : '<span class="av" style="width:96px;height:96px;background:#6b6578;color:#fff;font-size:40px">#</span>'}<h3>${esc(label)}</h3><p class="call-st">${video ? "FaceTime Video…" : "calling mobile…"}</p></div>
+    <div class="call-grid">
+      <button data-act="ctog"><span>${ti("mute")}</span>mute</button><button data-act="ckp"><span>${ti("grid9")}</span>keypad</button><button data-act="ctog"><span>${ti("speaker")}</span>audio</button>
+      <button data-act="cnote" data-id="Add call"><span>${ti("add")}</span>add call</button><button data-act="ctog"><span>${ti("video")}</span>FaceTime</button><button data-act="cnote" data-id="Contacts"><span>${ti("person")}</span>contacts</button></div>
+    <div class="call-kp">${[1,2,3,4,5,6,7,8,9,"*",0,"#"].map(n => `<button data-act="ctone">${n}</button>`).join("")}</div>
+    <button class="endbtn" data-act="endcall" aria-label="End call">${ti("call")}</button>`,
+    { cls: "call", darkStatus: true, after: v => {
+      v.style.display = "flex"; v.style.flexDirection = "column";
+      const st = v.querySelector(".call-st");
+      v._t1 = setTimeout(() => { st.textContent = "ringing…"; }, 2500);
+      v._t2 = setTimeout(() => { st.textContent = "No Answer"; v._t3 = setTimeout(() => { if (topView() === v) goBack(); }, 1600); }, 11000);
+      v._onClose = () => { clearTimeout(v._t1); clearTimeout(v._t2); clearTimeout(v._t3); };
+    }});
+}
+phone.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || !phone.contains(el)) return;
+  const a = el.dataset.act, id = el.dataset.id, v = el.closest(".view");
+  switch (a){
+    case "teltab": stopVM(); telShow(id); break;
+    case "recseg": renderRecents(v.querySelector(".tel-body"), id); break;
+    case "dial": e.stopPropagation(); startCall(id); break;
+    case "contact": e.stopPropagation(); openContact(id); break;
+    case "kp": if ((v._num || "").length < 15){ v._num = (v._num || "") + id; v.querySelector(".tel-body").innerHTML = keypadHTML(v._num); } break;
+    case "kpdel": v._num = (v._num || "").slice(0, -1); v.querySelector(".tel-body").innerHTML = keypadHTML(v._num); break;
+    case "kpcall": if (v._num) startCall(v._num); else toast("Type a number first"); break;
+    case "vmopen": { stopVM(); const i = +id; telRoot._vmOpen = telRoot._vmOpen === i ? null : i; v.querySelector(".tel-body").innerHTML = vmHTML(); break; }
+    case "vmplay": playVM(+id, el); break;
+    case "vmdel": { stopVM(); const d = store.get("vmdel", {}); d[id] = true; store.set("vmdel", d); telRoot._vmOpen = null; v.querySelector(".tel-body").innerHTML = vmHTML(); toast("Voicemail deleted"); break; }
+    case "cmsg": { const chat = CHATS.find(c => c.with === id); if (chat) openChat(chat.id); else toast(`No messages with ${telName(id)}`); break; }
+    case "facetime": startCall(id, true); break;
+    case "cmail": toast(`No email saved for ${telName(id)}`); break;
+    case "ctog": el.classList.toggle("on"); break;
+    case "ckp": v.classList.add("kpon"); break;
+    case "ctone": break;
+    case "cnote": toast(`${id} isn’t available during this call`); break;
+    case "endcall": goBack(); break;
+  }
+});
+// tapping outside the in-call keypad brings the buttons back
+phone.addEventListener("click", e => { const v = e.target.closest(".view.call.kpon"); if (v && !e.target.closest(".call-kp") && !e.target.closest('[data-act="ckp"]')) v.classList.remove("kpon"); });
+
+/* swipe from the left edge to go back, like iPhone */
+(() => {
+  let sx = null, sy = 0, done = false;
+  phone.addEventListener("touchstart", e => { const r = phone.getBoundingClientRect(), t = e.touches[0];
+    sx = (t.clientX - r.left < 24 && stack.length) ? t.clientX : null; sy = t.clientY; done = false; }, { passive: true });
+  phone.addEventListener("touchmove", e => { if (sx === null || done) return; const t = e.touches[0];
+    if (t.clientX - sx > 70 && Math.abs(t.clientY - sy) < 60){ done = true; goBack(); } }, { passive: true });
+  phone.addEventListener("touchend", () => { sx = null; }, { passive: true });
+})();
 
 </script>
 </body>
