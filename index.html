@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Telefon Anggun</title>
+<style>
+:root{
+  --page:#d8d3e2; --surface:#ffffff; --surface2:#f2f2f7; --text:#111114; --muted:#8a8a93;
+  --line:#e2e2ea; --bubble:#e9e9ef; --bubbleText:#111114; --note:#fffdf4;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#0e0c14; --surface:#000000; --surface2:#1c1c1e; --text:#f2f2f7; --muted:#8e8e96;
+    --line:#2c2c31; --bubble:#262629; --bubbleText:#f2f2f7; --note:#1c1c1e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0e0c14; --surface:#000000; --surface2:#1c1c1e; --text:#f2f2f7; --muted:#8e8e96;
+  --line:#2c2c31; --bubble:#262629; --bubbleText:#f2f2f7; --note:#1c1c1e; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%; scroll-padding-top:env(safe-area-inset-top,0px); background:var(--page)}
+body{margin:0; height:100%; background:var(--page); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Roboto,"Segoe UI",sans-serif;
+  display:grid; place-items:center; -webkit-tap-highlight-color:transparent; overflow:hidden}
+button{font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer}
+button:focus-visible{outline:2px solid #7A86C8; outline-offset:2px; border-radius:8px}
+
+.phone{position:relative; width:390px; height:min(844px, calc(100% - 32px)); border-radius:54px;
+  border:11px solid #19171f; box-shadow:0 0 0 2px #3a3644, 0 30px 80px rgba(20,10,40,.35);
+  overflow:hidden; background:#000; isolation:isolate}
+@media (max-width:500px){
+  body{place-items:stretch}
+  .phone{width:100%; height:100%; border:0; border-radius:0; box-shadow:none}
+}
+
+/* wallpaper: six book spines under a night sky */
+.wall{position:absolute; inset:0; background:
+  radial-gradient(circle at 78% 16%, rgba(255,248,225,.95) 0 22px, rgba(255,248,225,.18) 23px 40px, transparent 41px),
+  linear-gradient(180deg,#120f1e 0%,#221a36 48%,#3b2b4c 100%)}
+.wall .stars{position:absolute; inset:0 0 40% 0; background-image:
+  radial-gradient(1px 1px at 12% 20%, #fff8, transparent), radial-gradient(1px 1px at 30% 8%, #fff9, transparent),
+  radial-gradient(1.5px 1.5px at 52% 26%, #fffa, transparent), radial-gradient(1px 1px at 64% 12%, #fff7, transparent),
+  radial-gradient(1px 1px at 88% 34%, #fff8, transparent), radial-gradient(1px 1px at 22% 40%, #fff6, transparent),
+  radial-gradient(1.5px 1.5px at 42% 46%, #fff8, transparent), radial-gradient(1px 1px at 8% 52%, #fff7, transparent)}
+.spines{position:absolute; left:8%; right:8%; bottom:0; height:30%; display:flex; align-items:flex-end; gap:5px}
+.spine{flex:1; border-radius:4px 4px 0 0; position:relative; box-shadow:inset -6px 0 0 rgba(0,0,0,.18)}
+.spine::before,.spine::after{content:""; position:absolute; left:18%; right:18%; height:2px; background:#e8cf86; opacity:.75}
+.spine::before{top:12%} .spine::after{top:calc(12% + 6px)}
+.glad{position:absolute; right:14%; bottom:28%; width:70px; height:150px; opacity:.85}
+.home-dim{position:absolute; inset:0; background:rgba(10,6,20,.35); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); opacity:0; transition:opacity .35s}
+.phone.at-home .home-dim{opacity:1}
+
+/* status bar */
+.status{position:absolute; top:0; left:0; right:0; height:48px; z-index:50; display:flex; align-items:center;
+  justify-content:space-between; padding:6px 30px 0; font-weight:600; font-size:15px; color:#fff; pointer-events:none; transition:color .2s}
+.phone.in-app .status{color:var(--text)}
+.status .icons{display:flex; gap:6px; align-items:center}
+.status svg{fill:currentColor}
+
+/* lock screen */
+.lock{position:absolute; inset:0; z-index:20; color:#fff; display:flex; flex-direction:column; align-items:center;
+  padding-top:86px; transition:transform .45s cubic-bezier(.3,.7,.2,1), opacity .45s}
+.lock.gone{transform:translateY(-100%); opacity:0; pointer-events:none}
+.lock .date{font-size:19px; font-weight:500; opacity:.9}
+.lock .clock{font-size:88px; font-weight:700; letter-spacing:-2px; line-height:1; margin-top:2px; font-variant-numeric:tabular-nums}
+.lock .notif{margin-top:26px; width:calc(100% - 28px); background:rgba(255,255,255,.16); backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px); border-radius:20px; padding:12px 14px; display:flex; gap:10px; text-align:left}
+.lock .notif .ic{width:36px; height:36px; border-radius:9px; flex:none}
+.lock .notif b{font-size:14px} .lock .notif p{margin:2px 0 0; font-size:14px; opacity:.92}
+.lock .notif .t{font-size:12px; opacity:.7; margin-left:auto; flex:none}
+.lock .open-hint{margin-top:auto; margin-bottom:46px; font-size:15px; opacity:.85; padding:10px 20px}
+
+.pad{position:absolute; inset:0; z-index:30; display:flex; flex-direction:column; align-items:center; padding-top:90px;
+  color:#fff; background:rgba(12,8,22,.55); backdrop-filter:blur(26px); -webkit-backdrop-filter:blur(26px);
+  opacity:0; pointer-events:none; transition:opacity .25s}
+.pad.show{opacity:1; pointer-events:auto}
+.pad h2{font-size:20px; font-weight:500; margin:0}
+.dots{display:flex; gap:20px; margin:22px 0 10px}
+.dots i{width:13px; height:13px; border-radius:50%; border:1.5px solid #fff; transition:background .1s}
+.dots i.on{background:#fff}
+.dots.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-12px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(4px)}}
+.hint{font-size:13px; opacity:.7; min-height:18px; margin-bottom:26px; text-align:center; padding:0 30px}
+.keys{display:grid; grid-template-columns:repeat(3,78px); gap:16px 26px}
+.key{width:78px; height:78px; border-radius:50%; background:rgba(255,255,255,.16); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; font-size:34px; font-weight:400; line-height:1}
+.key small{font-size:10px; letter-spacing:2px; font-weight:600; margin-top:2px; opacity:.85}
+.key:active{background:rgba(255,255,255,.4)}
+.pad .cancel{margin-top:auto; margin-bottom:44px; font-size:16px; align-self:flex-end; margin-right:48px}
+
+/* home */
+.home{position:absolute; inset:0; z-index:10; padding:70px 22px 0; display:flex; flex-direction:column}
+.home{opacity:0; pointer-events:none; transition:opacity .35s .1s}
+.phone.at-home .home{opacity:1; pointer-events:auto}
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px 0; justify-items:center}
+.app{display:flex; flex-direction:column; align-items:center; gap:6px; color:#fff; font-size:12px; width:72px}
+.app .ic{width:60px; height:60px; border-radius:15px; display:grid; place-items:center; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.app:active .ic{filter:brightness(.8)}
+.widget{grid-column:span 4; width:100%; border-radius:22px; padding:16px 18px; color:#fff; margin-bottom:4px;
+  background:rgba(255,255,255,.14); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px)}
+.widget .q{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; font-size:16px; line-height:1.45; font-style:italic}
+.widget .src{font-size:12px; opacity:.7; margin-top:8px}
+.dock{margin-top:auto; margin-bottom:12px; display:flex; justify-content:space-around; padding:14px 6px; border-radius:30px;
+  background:rgba(255,255,255,.18); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px)}
+.dock .app > span:last-child{display:none}
+
+/* app views */
+.views{position:absolute; inset:0; z-index:40; pointer-events:none}
+.view{position:absolute; inset:0; background:var(--surface); color:var(--text); display:flex; flex-direction:column;
+  pointer-events:auto; transform:translateX(100%); transition:transform .32s cubic-bezier(.3,.7,.2,1)}
+.view.from-home{transform:scale(.88); opacity:0; transition:transform .3s cubic-bezier(.3,.7,.2,1), opacity .25s}
+.view.in{transform:none; opacity:1}
+.view.under{transform:translateX(-28%)}
+.nav{flex:none; padding:52px 12px 6px; display:flex; align-items:center; min-height:96px; position:relative;
+  border-bottom:.5px solid var(--line); background:color-mix(in srgb, var(--surface) 88%, transparent)}
+.nav .back{color:#2f7cf6; font-size:17px; display:flex; align-items:center; gap:2px; padding:8px 4px; z-index:1}
+.nav .back svg{width:12px; height:20px}
+.nav .mid{position:absolute; left:70px; right:70px; bottom:6px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:3px}
+.nav .mid .nm{font-size:12px; color:var(--text)} .nav .mid .sub{font-size:11px; color:var(--muted)}
+.big-title{font-size:34px; font-weight:700; padding:6px 18px 10px; letter-spacing:.3px}
+.scroll{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch}
+.homebar{position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:134px; height:5px; border-radius:3px;
+  background:#fff; z-index:60; opacity:.9}
+.phone.in-app .homebar{background:var(--text)}
+.homebar-hit{position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:200px; height:26px; z-index:61}
+
+/* message list */
+.row-item{display:flex; gap:12px; align-items:center; padding:10px 16px; width:100%; text-align:left}
+.row-item .body{flex:1; min-width:0; border-bottom:.5px solid var(--line); padding-bottom:12px}
+.row-item .top{display:flex; justify-content:space-between; gap:8px}
+.row-item b{font-size:16px; font-weight:600}
+.row-item .tm{font-size:14px; color:var(--muted); flex:none}
+.row-item p{margin:3px 0 0; font-size:14px; color:var(--muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.3}
+.av{border-radius:50%; display:grid; place-items:center; font-weight:600; flex:none}
+.av.dark{box-shadow:inset 0 0 0 1.5px #77727f}
+.gav{width:52px; height:52px; border-radius:50%; background:var(--surface2); display:grid; grid-template-columns:repeat(3,12px); gap:3px; place-content:center; flex:none}
+.gav.sm{width:30px; height:30px; grid-template-columns:repeat(3,6px); gap:2px}
+.gav i{width:12px; height:12px; border-radius:50%}
+.gav.sm i{width:6px; height:6px}
+
+/* chat */
+.chat{padding:10px 12px 16px; display:flex; flex-direction:column}
+.day{align-self:center; font-size:12px; color:var(--muted); margin:14px 0 8px; font-weight:500}
+.msg{display:flex; align-items:flex-end; gap:6px; margin-top:2px; max-width:100%}
+.msg.mine{justify-content:flex-end}
+.msg.gap{margin-top:9px}
+.msg .sp{width:28px; flex:none}
+.bw{display:flex; flex-direction:column; max-width:74%}
+.msg.mine .bw{align-items:flex-end}
+.who{font-size:11px; color:var(--muted); margin:0 0 2px 12px}
+.bubble{padding:8px 13px; border-radius:19px; font-size:16px; line-height:1.3; background:var(--bubble); color:var(--bubbleText);
+  white-space:pre-wrap; overflow-wrap:anywhere}
+.msg.mine .bubble{border-bottom-right-radius:19px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.msg.last.mine .bubble{border-bottom-right-radius:5px}
+.msg.last.theirs .bubble{border-bottom-left-radius:5px}
+.bubble.emoji{background:none !important; font-size:40px; padding:0 2px; line-height:1.1}
+.receipt{align-self:flex-end; font-size:11px; color:var(--muted); margin:3px 4px 0}
+.composer{flex:none; display:flex; gap:8px; align-items:center; padding:8px 12px 30px; border-top:.5px solid var(--line)}
+.composer .plus{width:34px; height:34px; border-radius:50%; background:var(--surface2); display:grid; place-items:center; color:var(--muted); font-size:22px}
+.composer .field{flex:1; border:1px solid var(--line); border-radius:18px; padding:7px 14px; color:var(--muted); font-size:16px}
+
+/* notes */
+.view.notes{background:var(--surface2)}
+.group{margin:0 16px 16px; background:var(--surface); border-radius:12px; overflow:hidden}
+.note-row{display:block; width:100%; text-align:left; padding:11px 16px; border-bottom:.5px solid var(--line)}
+.note-row:last-child{border-bottom:0}
+.note-row b{font-size:16px; display:block}
+.note-row span{font-size:14px; color:var(--muted)}
+.note-body{padding:6px 20px 40px; background:var(--note); min-height:100%}
+.note-body .when{font-size:13px; color:var(--muted); text-align:center; margin:4px 0 14px}
+.note-body h1{font-size:26px; margin:0 0 12px}
+.note-body p{font-size:17px; line-height:1.5; white-space:pre-wrap; margin:0}
+
+/* gallery */
+.photos{display:grid; grid-template-columns:repeat(3,1fr); gap:2px}
+.ph{aspect-ratio:1; background-size:cover; background-position:center; position:relative}
+.viewer{flex:1; display:flex; flex-direction:column; justify-content:center; background:#000}
+.viewer .img{aspect-ratio:3/4; width:100%; background-size:cover; background-position:center}
+.viewer .cap{color:#fff; padding:16px 20px; font-size:15px; line-height:1.4}
+.viewer .cap small{display:block; color:#aaa; margin-top:4px}
+.view.dark{background:#000}
+.view.dark .nav{background:#000; border-color:#222}
+
+/* calendar */
+.cal-head{padding:0 18px 8px; color:#e0443e; font-size:17px; font-weight:600}
+.week{display:grid; grid-template-columns:repeat(7,1fr); text-align:center; padding:0 10px 12px; border-bottom:.5px solid var(--line)}
+.week .dn{font-size:11px; color:var(--muted); margin-bottom:6px}
+.week .dd{width:34px; height:34px; margin:auto; border-radius:50%; display:grid; place-items:center; font-size:18px}
+.week .dd.today{background:#e0443e; color:#fff; font-weight:600}
+.ev{display:flex; gap:12px; padding:12px 18px; border-bottom:.5px solid var(--line)}
+.ev .bar{width:4px; border-radius:2px; flex:none}
+.ev .w{font-size:13px; color:var(--muted); margin-bottom:2px}
+.ev b{font-size:16px; font-weight:600}
+
+.toast{position:absolute; left:50%; top:62px; transform:translate(-50%,-20px); z-index:70; background:rgba(30,28,36,.9); color:#fff;
+  font-size:14px; padding:10px 16px; border-radius:14px; opacity:0; transition:.25s; pointer-events:none; white-space:nowrap}
+.toast.show{opacity:1; transform:translate(-50%,0)}
+
+
+/* pictures */
+.av{position:relative; overflow:hidden}
+.av img,.ph img,.viewer .img img,.wall-img img,.bubble.pic img,.note-img img,.lightbox .lb-img img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.ph{overflow:hidden}
+.viewer .img{position:relative; overflow:hidden}
+.viewer .img.has{aspect-ratio:auto; height:70%}
+.viewer .img.has img{object-fit:contain; background:#000}
+.wall-img{position:absolute; inset:0; z-index:3; background:#000}
+.bubble.pic{position:relative; width:210px; height:260px; padding:0; overflow:hidden; background:var(--bubble); display:block}
+.bubble.pic .missing{position:absolute; inset:0; display:grid; place-items:center; font-size:30px; opacity:.4}
+.bubble.pic img{z-index:1}
+.note-img{position:relative; margin-top:18px; width:100%; aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:var(--line)}
+.lightbox{position:absolute; inset:0; z-index:80; background:#000; display:none; align-items:center; justify-content:center}
+.lightbox.show{display:flex}
+.lightbox .lb-img{position:relative; width:100%; height:80%}
+.lightbox .lb-img img{object-fit:contain}
+.lightbox .lb-close{position:absolute; top:56px; left:16px; color:#fff; font-size:17px}
+/* lock button on home */
+.lock-btn{align-self:center; margin-top:auto; margin-bottom:12px; display:flex; align-items:center; gap:6px; color:#fff; font-size:13px;
+  padding:7px 14px; border-radius:16px; background:rgba(255,255,255,.16); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
+.lock-btn + .dock{margin-top:0}
+.key.del{background:none; font-size:24px}
+
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.01ms !important; animation-duration:.01ms !important} }
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="wall">
+    <div class="stars"></div>
+    <svg class="glad" viewBox="0 0 70 150" fill="none" stroke="#f4eee0" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+      <path d="M35 150 C35 110 33 70 38 10"/>
+      <path d="M36 118 C26 112 20 102 22 94"/><path d="M36 100 C46 96 52 86 50 78"/>
+      <ellipse cx="31" cy="64" rx="9" ry="6" transform="rotate(-25 31 64)"/><ellipse cx="45" cy="52" rx="9" ry="6" transform="rotate(25 45 52)"/>
+      <ellipse cx="32" cy="40" rx="8" ry="5.5" transform="rotate(-25 32 40)"/><ellipse cx="44" cy="29" rx="7" ry="5" transform="rotate(25 44 29)"/>
+      <ellipse cx="36" cy="18" rx="5" ry="4"/>
+    </svg>
+    <div class="spines" id="spines"></div>
+    <div class="home-dim"></div>
+  </div>
+
+  <div class="status">
+    <span id="sbTime">9:41</span>
+    <span class="icons" aria-hidden="true">
+      <svg width="18" height="11" viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg>
+      <svg width="16" height="11" viewBox="0 0 16 11"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .4C5.2.4 2.7 1.5.8 3.3L2 4.6a8.6 8.6 0 0 1 6-2.4Zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.3A7 7 0 0 0 8 3.8a7 7 0 0 0-4.8 1.9L4.4 7c1-.9 2.2-1.4 3.6-1.4ZM8 9l1.9 2L8 11 6.1 11 8 9Z"/></svg>
+      <svg width="27" height="12" viewBox="0 0 27 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.8"/><rect x="24" y="4" width="2" height="4" rx="1" opacity=".45"/></svg>
+    </span>
+  </div>
+
+  <div class="home" id="home"></div>
+
+  <div class="lock" id="lock">
+    <div class="date" id="lockDate"></div>
+    <div class="clock" id="lockTime">9:41</div>
+    <div class="notif" id="lockNotif"></div>
+    <button class="open-hint" id="openHint">Ketik untuk buka</button>
+  </div>
+
+  <div class="pad" id="pad" role="dialog" aria-label="Kod laluan">
+    <h2>Masukkan Kod Laluan</h2>
+    <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+    <div class="hint" id="hint"></div>
+    <div class="keys" id="keys"></div>
+    <button class="cancel" id="cancel">Batal</button>
+  </div>
+
+  <div class="views" id="views"></div>
+  <div class="toast" id="toast"></div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Gambar"><button class="lb-close">Tutup</button><div class="lb-img"></div></div>
+  <div class="homebar"></div>
+  <button class="homebar-hit" id="homebar" aria-label="Skrin utama"></button>
+</div>
+
+<script>
+/* =====================================================================
+   EDIT YOUR STORY HERE (Anggun's phone)
+   Everything the reader sees comes from the data below.
+   ===================================================================== */
+
+/* HOW TO WRITE MESSAGES
+   { "d": "Sabtu 2:14 PTG" }                     a day divider
+   { "f": "nuha", "t": "hello" }                 a text message from nuha
+   { "f": "nuha", "img": "pics/medal.jpg" }      a picture message
+   { "f": "nuha", "img": "pics/a.jpg", "t": "!" } a picture with text under it
+   { "f": "jebat", "t": "ok", "s": "Dibaca" }    small status under a message
+
+   HOW TO ADD YOUR OWN PICTURES
+   1. Upload the picture into this same GitHub repository
+      (put it in a folder called pics to keep things tidy).
+   2. Write its path in quotes, e.g. "pics/raya.jpg".
+      Spelling and capital letters must match exactly: Raya.JPG is not raya.jpg.
+   3. If a picture can't be found, the phone shows the colour block instead.
+
+   Places you can use a picture:
+   - WALLPAPER below                 lock and home screen background
+   - "pic" on any person in PEOPLE   their profile picture
+   - "pic" on a group chat           the group's picture
+   - "img" in a message              a picture sent in chat
+   - "img" in PHOTOS                 a photo in Galeri
+   - "img" in NOTES                  a picture at the bottom of a note
+*/
+
+const OWNER = "anggun";
+const PASSCODE = "0164";
+const PASSCODE_HINT = "Petunjuk: malam Bayu menulis tentang aku.";
+const STORY_DATE = "Rabu, 11 November";
+const WALLPAPER = "";   // e.g. "pics/wallpaper.jpg"  (leave empty for the book-spine wallpaper)
+
+const PEOPLE = {
+  anggun: {"name": "Anggun", "color": "#6B3A7D", "ink": "#fff", "book": "Kundang", "pic": ""},
+  jebat: {"name": "Jebat", "color": "#C9A13B", "ink": "#1b1405", "book": "Kencana", "pic": ""},
+  harun: {"name": "Harun", "color": "#24306E", "ink": "#fff", "book": "Nilakandi", "pic": ""},
+  nuha: {"name": "Nuha", "color": "#B3262E", "ink": "#fff", "book": "Kirmizi", "pic": ""},
+  atul: {"name": "Atul", "color": "#8C97D4", "ink": "#11142e", "book": "Lembayung", "pic": ""},
+  bulan: {"name": "Bulan", "color": "#23212C", "ink": "#fff", "book": "Langking", "pic": ""},
+  mak: {"name": "Mak", "color": "#b07a9c", "ink": "#fff", "pic": ""},
+  ayah: {"name": "Ayah", "color": "#7d6b5a", "ink": "#fff", "pic": ""},
+  ayu: {"name": "Kak Long", "color": "#a09080", "ink": "#fff", "pic": ""},
+  andika: {"name": "Abang Andika", "color": "#4f6b5a", "ink": "#fff", "pic": ""},
+  arjuna: {"name": "Arjuna", "color": "#5a7d99", "ink": "#fff", "pic": ""},
+};
+
+const HOME_QUOTE = {"text": "Teruskan bermain dan teruslah bergembira. Di sini, engkau tidak akan berduka.", "src": "Seri Bayu"};
+
+const CHATS = [
+  {
+    id: "pustaka", name: "Anak Pustaka 🍃", group: true, members: ["anggun", "jebat", "harun", "nuha", "atul", "bulan"],
+    messages: [
+      {"d": "Sabtu 2:14 PTG"},
+      {"f": "nuha", "t": "guys."},
+      {"f": "nuha", "t": "GUYS."},
+      {"f": "nuha", "t": "coach call aku tadi. dia nak aku masuk skuad negeri 🏃‍♀️"},
+      {"f": "bulan", "t": "KAK NUHAAAA"},
+      {"f": "bulan", "t": "tahniah!!! 🎉🎉🎉"},
+      {"f": "anggun", "t": "Alhamdulillah. Mak ayah Nuha dah tahu?"},
+      {"f": "nuha", "t": "...belum"},
+      {"f": "nuha", "t": "tapi kali ni aku tak minta izin. aku bagitahu je."},
+      {"f": "harun", "t": "bangga dengan kau"},
+      {"f": "jebat", "t": "Proud of you. Dinner Sabtu ni, aku belanja."},
+      {"f": "nuha", "t": "kau ni memang tak reti cakap melayu penuh eh bat"},
+      {"f": "jebat", "t": "Saya fasih. Saya cuma memilih."},
+      {"f": "bulan", "t": "abang jebat belanja!! nak sate ikan"},
+      {"f": "anggun", "t": "Bulan."},
+      {"f": "bulan", "t": "hehe ok bukan sate ikan"},
+      {"f": "atul", "t": "🍃"},
+      {"f": "harun", "t": "atul setuju tu"},
+      {"f": "atul", "t": "setuju."},
+      {"d": "Ahad 9:02 MLM"},
+      {"f": "anggun", "t": "Kelas mengaji habis pukul 9. Saya datang terus lepas tu."},
+      {"f": "harun", "t": "aku habis shift 8. boleh ambik bulan"},
+      {"f": "bulan", "t": "abang harun naik motor ke 😭 tudung aku nanti"},
+      {"f": "harun", "t": "kereta. dah beli kereta"},
+      {"f": "nuha", "t": "WHAT"},
+      {"f": "jebat", "t": "Finally."},
+      {"f": "harun", "t": "second hand. tapi aku punya."},
+      {"f": "anggun", "t": "🤍"},
+      {"d": "Semalam 1:47 PG"},
+      {"f": "bulan", "t": "kak atul"},
+      {"f": "bulan", "t": "aku mimpi pustaka tu lagi"},
+      {"f": "atul", "t": "aku pun."},
+      {"f": "jebat", "t": "Same."},
+      {"f": "anggun", "t": "Kadang saya rasa dia masih dengar kita."},
+      {"f": "harun", "t": "dia dengar."},
+      {"f": "nuha", "t": "ok jangan buat aku nangis sebelum training esok"},
+      {"f": "jebat", "t": "Sabtu. Pukul 8. Jangan lambat."},
+    ]
+  },
+  {
+    id: "keluarga", name: "Keluarga 🏡", group: true, members: ["ayah", "mak", "ayu", "andika", "anggun", "arjuna"],
+    messages: [
+      {"d": "Jumaat 1:30 PTG"},
+      {"f": "mak", "t": "Alhamdulillah Andika jadi imam Jumaat hari ni. Bangga Mak 🤲"},
+      {"f": "ayah", "t": "MasyaAllah."},
+      {"f": "ayu", "t": "👍"},
+      {"f": "arjuna", "t": "abang power"},
+      {"d": "Jumaat 9:15 MLM"},
+      {"f": "anggun", "t": "Mak, Ayah. Kelas mengaji Anggun dah 30 orang murid sekarang."},
+      {"f": "anggun", "t": "Ustazah nak Anggun buka kelas dewasa pula."},
+      {"d": "Sabtu 8:02 PG"},
+      {"f": "mak", "t": "Anggun, Ahad ni balik masak untuk kenduri Andika. Datang awal."},
+      {"f": "anggun", "t": "Baik, Mak.", "s": "Dibaca"},
+    ]
+  },
+  {
+    id: "dm-bulan", name: "Bulan", with: "bulan",
+    messages: [
+      {"d": "Isnin 10:40 MLM"},
+      {"f": "bulan", "t": "kak anggun"},
+      {"f": "bulan", "t": "aku dapat tawaran matrik 😭😭"},
+      {"f": "anggun", "t": "Alhamdulillah, Bulan! Tok dah tahu?"},
+      {"f": "bulan", "t": "dah. tok nangis. pastu terus pergi goreng ikan"},
+      {"f": "anggun", "t": "Itu cara Tok cakap dia bangga."},
+      {"f": "bulan", "t": "kak... kalau aku tak boleh nanti macam mana"},
+      {"f": "anggun", "t": "Bulan dah buat benda yang lebih susah masa umur lapan tahun."},
+      {"f": "anggun", "t": "Kita buat sama-sama. Kakak tolong beli barang."},
+      {"f": "bulan", "t": "🥹"},
+    ]
+  }
+];
+
+const NOTES = [
+  {"title": "Kelas dewasa", "when": "Isnin", "body": "Isnin dan Rabu, lepas Isyak.\nMula dengan Iqra' 1.\nJangan malukan sesiapa yang baru belajar. Semua orang mula dari huruf pertama."},
+  {"title": "Untuk diri sendiri", "when": "Jumaat 11:48 MLM", "body": "Rumah yang penuh dengan orang, tapi tiada tempat untuk orang seperti kau.\n\nItu dulu.\n\nSekarang aku bina tempat aku sendiri. Dan ada lima orang yang selalu ada kerusi di situ."},
+  {"title": "Barang matrik Bulan", "when": "Selasa", "body": "Cadar dan bantal\nBaldi + penyangkut\nKalkulator saintifik\nTelekung baru\nKuih untuk Tok bawa masa hantar"},
+];
+
+// Add  "img": "https://..."  to any photo to show a real picture instead of a colour block
+const PHOTOS = [
+  {"cap": "Murid kelas mengaji. 30 orang sekarang.", "who": "anggun", "when": "Oktober"},
+  {"cap": "Bulan pegang surat tawaran matrik.", "who": "bulan", "when": "Isnin"},
+  {"cap": "Nuha dalam jersi negeri.", "who": "nuha", "when": "Sabtu"},
+  {"cap": "Lauk kenduri. Aku masak semua.", "who": "anggun", "when": "Ogos"},
+  {"cap": "Kami berenam. Tahun ke-10.", "who": "jebat", "when": "Jun"},
+];
+
+const EVENTS = [
+  {"when": "Sabtu, 14 Nov  •  8:00 MLM", "title": "Dinner Anak Pustaka (datang lepas kelas)", "who": "jebat"},
+  {"when": "Ahad, 15 Nov  •  7:00 PG", "title": "Masak untuk kenduri Abang Andika", "who": "anggun"},
+  {"when": "Isnin, 16 Nov", "title": "Hantar Bulan daftar matrik", "who": "bulan"},
+];
+
+const LOCK_NOTIF = {"chat": "keluarga", "from": "mak", "text": "Anggun, Ahad ni balik masak untuk kenduri Andika. Datang awal.", "when": "Sabtu"};
+
+/* ===================================================================== */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const P = id => PEOPLE[id] || { name: id, color: "#999", ink: "#fff" };
+const phone = $("#phone");
+// a picture that quietly disappears if the file is missing, so the colour behind it shows instead
+const pic = (src, alt = "") => src ? `<img src="${esc(encodeURI(src))}" alt="${esc(alt)}" loading="lazy" onerror="this.remove()">` : "";
+
+function avatar(id, size){
+  const p = P(id);
+  const dark = p.color.toLowerCase() === "#23212c" ? " dark" : "";
+  return `<span class="av${dark}" style="width:${size}px;height:${size}px;background:${p.color};color:${p.ink};font-size:${Math.round(size*.42)}px">${esc(p.name[0])}${pic(p.pic)}</span>`;
+}
+function groupAvatar(c, small){
+  if (c.pic) return `<span class="av" style="width:${small?30:52}px;height:${small?30:52}px;background:var(--surface2)">${pic(c.pic)}</span>`;
+  return `<span class="gav${small?" sm":""}">${c.members.map(m => `<i style="background:${P(m).color}"></i>`).join("")}</span>`;
+}
+function chatAvatar(c, size){ return c.group ? groupAvatar(c, size < 40) : avatar(c.with, size); }
+
+// wallpaper
+const heights = [78, 88, 70, 84, 74, 80];
+$("#spines").innerHTML = ["anggun","jebat","harun","nuha","atul","bulan"]
+  .map((id,i) => id === OWNER
+    ? `<div class="spine" style="background:${P(id).color};height:100%;box-shadow:inset -6px 0 0 rgba(0,0,0,.18),0 0 22px ${P(id).color}"></div>`
+    : `<div class="spine" style="background:${P(id).color};height:${heights[i]}%"></div>`).join("");
+if (WALLPAPER) $(".wall").insertAdjacentHTML("afterbegin", `<span class="wall-img">${pic(WALLPAPER)}</span>`);
+
+// clock
+function tick(){
+  const d = new Date(); let h = d.getHours() % 12 || 12; const m = String(d.getMinutes()).padStart(2,"0");
+  $("#sbTime").textContent = `${h}:${m}`; $("#lockTime").textContent = `${h}:${m}`;
+}
+tick(); setInterval(tick, 15000);
+$("#lockDate").textContent = STORY_DATE;
+
+// lock notification
+(() => {
+  const c = CHATS.find(x => x.id === LOCK_NOTIF.chat);
+  $("#lockNotif").innerHTML = `<span class="ic" style="background:linear-gradient(#6ee36e,#2fbf3f);display:grid;place-items:center">${msgGlyph(20)}</span>
+    <div><b>${esc(c ? c.name : "")}</b><p>${c && c.group ? esc(P(LOCK_NOTIF.from).name) + ": " : ""}${esc(LOCK_NOTIF.text)}</p></div><span class="t">${esc(LOCK_NOTIF.when)}</span>`;
+})();
+
+/* ---------- navigation ----------
+   Screens stack up: lock > home > app > chat/note/photo.
+   The on-screen back button, the phone's own back button/gesture,
+   the browser back button and the Esc key all go back one screen. */
+const stack = [];
+let unlocked = false;
+const depth = () => (unlocked ? 1 : 0) + stack.length;
+function remember(){ try { history.pushState({ d: depth() }, ""); } catch (e) {} }
+function goBack(){ if (depth() === 0) return; try { history.back(); } catch (e) { stepBack(); } }
+window.addEventListener("popstate", e => {
+  const target = (e.state && e.state.d) || 0;
+  while (depth() > target) stepBack();
+});
+function stepBack(){
+  if (stack.length) return popView();
+  if (unlocked) lockPhone();
+}
+
+function unlockPhone(){
+  $("#pad").classList.remove("show"); $("#lock").classList.add("gone"); phone.classList.add("at-home");
+  unlocked = true; remember();
+}
+function lockPhone(){
+  unlocked = false; phone.classList.remove("at-home", "in-app");
+  $("#lock").classList.remove("gone"); $("#hint").textContent = "";
+}
+
+// passcode
+let entered = "";
+const letters = ["","ABC","DEF","GHI","JKL","MNO","PQRS","TUV","WXYZ"];
+$("#keys").innerHTML = [1,2,3,4,5,6,7,8,9].map(n => `<button class="key" data-k="${n}">${n}<small>${letters[n-1]}</small></button>`).join("")
+  + `<span></span><button class="key" data-k="0">0</button><button class="key del" data-k="del" aria-label="Padam">⌫</button>`;
+$("#keys").addEventListener("click", e => {
+  const k = e.target.closest(".key"); if (!k) return;
+  if (k.dataset.k === "del"){ entered = entered.slice(0,-1); paintDots(); return; }
+  if (entered.length >= 4) return;
+  entered += k.dataset.k; paintDots();
+  if (entered.length === 4) setTimeout(check, 120);
+});
+function paintDots(){ [...$("#dots").children].forEach((d,i) => d.classList.toggle("on", i < entered.length)); }
+function check(){
+  if (entered === PASSCODE){ entered = ""; paintDots(); unlockPhone(); }
+  else { const d = $("#dots"); d.classList.add("shake"); $("#hint").textContent = PASSCODE_HINT;
+    setTimeout(() => { d.classList.remove("shake"); entered=""; paintDots(); }, 420); }
+}
+const closePad = () => { $("#pad").classList.remove("show"); entered=""; paintDots(); };
+$("#openHint").onclick = () => $("#pad").classList.add("show");
+$("#lock").addEventListener("click", e => { if (!e.target.closest(".open-hint")) $("#pad").classList.add("show"); });
+$("#cancel").onclick = closePad;
+document.addEventListener("keydown", e => {
+  if ($("#pad").classList.contains("show")){
+    if (/^[0-9]$/.test(e.key) && entered.length < 4){ entered += e.key; paintDots(); if (entered.length===4) setTimeout(check,120); }
+    if (e.key === "Backspace"){ entered = entered.slice(0,-1); paintDots(); }
+    if (e.key === "Escape") closePad();
+    return;
+  }
+  if (e.key === "Escape" && !$("#lightbox").classList.contains("show")) goBack();
+});
+
+// icons
+function msgGlyph(s){ return `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path fill="#fff" d="M12 3C6.5 3 2 6.7 2 11.2c0 2.6 1.5 4.9 3.9 6.4-.2 1.3-.9 2.6-2 3.4 2 0 3.8-.7 5-1.8 1 .3 2 .4 3.1.4 5.5 0 10-3.7 10-8.3S17.5 3 12 3Z"/></svg>`; }
+const ICONS = {
+  mesej: { label:"Mesej", bg:"linear-gradient(#6ee36e,#2fbf3f)", svg: msgGlyph(34) },
+  nota: { label:"Nota", bg:"#fff", svg:`<svg width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="17" fill="#f8c93c"/><g stroke="#d6d6dc" stroke-width="1.2"><path d="M8 29h44M8 38h44M8 47h44"/></g></svg>` },
+  galeri: { label:"Galeri", bg:"#fff", svg:`<svg width="44" height="44" viewBox="-22 -22 44 44">${["anggun","jebat","harun","nuha","atul","bulan"].map((id,i)=>`<ellipse cx="0" cy="-10" rx="6" ry="11" fill="${P(id).color}" opacity=".9" transform="rotate(${i*60})"/>`).join("")}</svg>` },
+  kalendar: { label:"Kalendar", bg:"#fff", svg:`<div style="text-align:center;line-height:1"><div style="color:#e0443e;font-size:11px;font-weight:600">Rabu</div><div style="color:#111;font-size:30px;font-weight:300;margin-top:2px">11</div></div>` },
+  telefon: { label:"Telefon", bg:"linear-gradient(#6ee36e,#2fbf3f)", svg:`<svg width="30" height="30" viewBox="0 0 24 24"><path fill="#fff" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>` },
+  kamera: { label:"Kamera", bg:"linear-gradient(#d9d9de,#a5a5ad)", svg:`<svg width="34" height="34" viewBox="0 0 24 24"><path fill="#333" d="M9 4 7.2 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3.2L15 4H9Z"/><circle cx="12" cy="13" r="4.2" fill="#d9d9de"/><circle cx="12" cy="13" r="2.6" fill="#333"/></svg>` },
+  muzik: { label:"Muzik", bg:"linear-gradient(#ff6b7d,#f2364f)", svg:`<svg width="30" height="30" viewBox="0 0 24 24"><path fill="#fff" d="M9 17.5V6l11-2v11.5a2.5 2.5 0 1 1-2-2.45V7.6l-7 1.3v8.6a2.5 2.5 0 1 1-2-2.45Z"/></svg>` }
+};
+function appBtn(key){
+  const a = ICONS[key];
+  return `<button class="app" data-app="${key}"><span class="ic" style="background:${a.bg}">${a.svg}</span><span>${a.label}</span></button>`;
+}
+$("#home").innerHTML = `<div class="grid">
+  <div class="widget"><div class="q">${esc(HOME_QUOTE.text)}</div><div class="src">${esc(HOME_QUOTE.src)}</div></div>
+  ${["galeri","nota","kalendar"].map(appBtn).join("")}
+</div>
+<button class="lock-btn" id="lockBtn" aria-label="Kunci telefon"><svg width="13" height="16" viewBox="0 0 13 16"><rect x="1" y="7" width="11" height="8" rx="2" fill="currentColor"/><path d="M3.5 7V4.8a3 3 0 0 1 6 0V7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Kunci</button>
+<div class="dock">${["telefon","mesej","kamera","muzik"].map(appBtn).join("")}</div>`;
+$("#home").addEventListener("click", e => {
+  const b = e.target.closest(".app"); if (b) openApp(b.dataset.app);
+});
+$("#lockBtn").onclick = goBack;
+
+// toast
+let tt;
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("show"),1600); }
+
+function push(html, opts = {}){
+  const v = document.createElement("section");
+  v.className = "view" + (opts.cls ? " " + opts.cls : "") + (stack.length ? "" : " from-home");
+  v.innerHTML = html; $("#views").appendChild(v);
+  if (stack.length) stack[stack.length-1].classList.add("under");
+  stack.push(v); phone.classList.toggle("in-app", !opts.darkStatus);
+  requestAnimationFrame(() => requestAnimationFrame(() => v.classList.add("in")));
+  v.querySelectorAll("[data-back]").forEach(b => b.onclick = goBack);
+  if (opts.after) opts.after(v);
+  remember();
+  return v;
+}
+function popView(){
+  const v = stack.pop(); if (!v) return;
+  v.classList.remove("in");
+  if (stack.length){ const top = stack[stack.length-1]; top.classList.remove("under"); phone.classList.toggle("in-app", !top.classList.contains("dark")); }
+  else phone.classList.remove("in-app");
+  setTimeout(() => v.remove(), 340);
+}
+function goHome(){ if (stack.length){ try { history.go(-stack.length); } catch (e) { while (stack.length) popView(); } } }
+$("#homebar").onclick = goHome;
+
+const backBtn = label => `<button class="back" data-back aria-label="Kembali"><svg viewBox="0 0 12 20"><path d="M10 2 2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>${esc(label)}</button>`;
+const topNav = () => `<div class="nav">${backBtn("Utama")}</div>`;
+
+function openApp(key){
+  if (!unlocked) return;
+  if (key === "mesej") return openMessages();
+  if (key === "nota") return openNotes();
+  if (key === "galeri") return openGallery();
+  if (key === "kalendar") return openCalendar();
+  toast("Tiada apa di sini… lagi.");
+}
+
+function lastText(c){
+  const m = [...c.messages].reverse().find(x => x.t || x.img); if (!m) return "";
+  return (c.group && m.f !== OWNER ? P(m.f).name + ": " : "") + (m.t || "📷 Gambar");
+}
+function lastDay(c){ const m = [...c.messages].reverse().find(x => x.d); return m ? m.d.replace(/\s\d.*$/,"") : ""; }
+
+function openMessages(){
+  const rows = CHATS.map(c => `<button class="row-item" data-chat="${c.id}">${chatAvatar(c,52)}
+    <span class="body"><span class="top"><b>${esc(c.name)}</b><span class="tm">${esc(lastDay(c))}</span></span><p>${esc(lastText(c))}</p></span></button>`).join("");
+  push(`${topNav()}<div class="scroll"><div class="big-title">Mesej</div>${rows}</div>`, {
+    after: v => v.querySelectorAll("[data-chat]").forEach(b => b.onclick = () => openChat(b.dataset.chat))
+  });
+}
+
+// full-screen picture viewer for pictures sent in chat
+function openLightbox(src){
+  const lb = $("#lightbox"); lb.querySelector(".lb-img").innerHTML = pic(src); lb.classList.add("show");
+}
+$("#lightbox").addEventListener("click", () => $("#lightbox").classList.remove("show"));
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#lightbox").classList.remove("show"); });
+
+const EMOJI_ONLY = /^(\p{Extended_Pictographic}|\p{Emoji_Component}|\u200d|\ufe0f|\s)+$/u;
+function openChat(id){
+  const c = CHATS.find(x => x.id === id); const me = P(OWNER);
+  let html = ""; let prev = null;
+  c.messages.forEach((m,i) => {
+    if (m.d){ html += `<div class="day">${esc(m.d)}</div>`; prev = null; return; }
+    const mine = m.f === OWNER; const next = c.messages[i+1];
+    const last = !next || next.d || next.f !== m.f; const first = prev !== m.f;
+    html += `<div class="msg ${mine?"mine":"theirs"}${last?" last":""}${first?" gap":""}">`;
+    if (!mine && c.group) html += last ? avatar(m.f,28) : `<span class="sp"></span>`;
+    html += `<div class="bw">${!mine && c.group && first ? `<div class="who">${esc(P(m.f).name)}</div>` : ""}`;
+    if (m.img) html += `<button class="bubble pic" data-img="${esc(m.img)}" aria-label="Buka gambar">${pic(m.img)}<span class="missing">📷</span></button>`;
+    if (m.t){
+      const emoji = EMOJI_ONLY.test(m.t) && [...m.t].length <= 6;
+      const style = mine && !emoji ? `background:${me.color};color:${me.ink}` : "";
+      html += `<div class="bubble${emoji?" emoji":""}" style="${style}">${esc(m.t)}</div>`;
+    }
+    html += `</div></div>`;
+    if (m.s) html += `<div class="receipt">${esc(m.s)}</div>`;
+    prev = m.f;
+  });
+  const sub = c.group ? `${c.members.length} orang` : "";
+  push(`<div class="nav">${backBtn("Mesej")}<div class="mid">${chatAvatar(c,c.group?30:34)}<span class="nm">${esc(c.name)}</span>${sub?`<span class="sub">${sub}</span>`:""}</div></div>
+    <div class="scroll"><div class="chat">${html}</div></div>
+    <div class="composer"><span class="plus">+</span><span class="field">Mesej</span></div>`, {
+    after: v => {
+      const s = v.querySelector(".scroll"); requestAnimationFrame(() => s.scrollTop = s.scrollHeight);
+      v.querySelectorAll("[data-img]").forEach(b => b.onclick = () => openLightbox(b.dataset.img));
+    }
+  });
+}
+
+function openNotes(){
+  const rows = NOTES.map((n,i) => `<button class="note-row" data-n="${i}"><b>${esc(n.title)}</b><span>${esc(n.when)}  ${esc(n.body.split("\n").find(l=>l.trim()&&l!==n.title)||"")}</span></button>`).join("");
+  push(`${topNav()}<div class="scroll"><div class="big-title">Nota</div><div class="group">${rows}</div></div>`, {
+    cls: "notes",
+    after: v => v.querySelectorAll("[data-n]").forEach(b => b.onclick = () => {
+      const n = NOTES[b.dataset.n];
+      push(`<div class="nav">${backBtn("Nota")}</div><div class="scroll" style="background:var(--note)"><div class="note-body"><div class="when">${esc(n.when)}</div><h1>${esc(n.title)}</h1><p>${esc(n.body)}</p>${n.img ? `<div class="note-img">${pic(n.img)}</div>` : ""}</div></div>`);
+    })
+  });
+}
+
+function photoFill(p){
+  const c = P(p.who).color;
+  return `background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), transparent 55%), linear-gradient(160deg, ${c}, #1a1424)`;
+}
+function openGallery(){
+  const tiles = PHOTOS.map((p,i) => `<button class="ph" data-p="${i}" style="${photoFill(p)}" aria-label="${esc(p.cap)}">${pic(p.img, p.cap)}</button>`).join("");
+  push(`${topNav()}<div class="scroll"><div class="big-title">Galeri</div><div class="photos">${tiles}</div></div>`, {
+    after: v => v.querySelectorAll("[data-p]").forEach(b => b.onclick = () => {
+      const p = PHOTOS[b.dataset.p];
+      push(`<div class="nav">${backBtn("Galeri")}</div><div class="viewer"><div class="img${p.img?" has":""}" style="${photoFill(p)}">${pic(p.img, p.cap)}</div><div class="cap">${esc(p.cap)}<small>${esc(p.when)}</small></div></div>`, { cls:"dark", darkStatus:true });
+    })
+  });
+}
+
+function openCalendar(){
+  const days = [["Ahd",8],["Isn",9],["Sel",10],["Rab",11],["Kha",12],["Jum",13],["Sab",14]];
+  const week = days.map(([n,d]) => `<div><div class="dn">${n}</div><div class="dd${d===11?" today":""}">${d}</div></div>`).join("");
+  const evs = EVENTS.map(e => `<div class="ev"><span class="bar" style="background:${P(e.who).color}"></span><div><div class="w">${esc(e.when)}</div><b>${esc(e.title)}</b></div></div>`).join("");
+  push(`${topNav()}<div class="scroll"><div class="big-title">Kalendar</div><div class="cal-head">November 2026</div><div class="week">${week}</div>${evs}</div>`);
+}
+</script>
+</body>
+</html>
